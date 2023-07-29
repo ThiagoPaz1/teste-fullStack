@@ -1,16 +1,18 @@
 import restify from "restify"
 import dotenv from "dotenv" 
+import cors from "cors"
 
-import { validations } from "./modules/student/middlewares/validations.middleware"
+import { validationsInBody } from "./modules/student/middlewares/validationsInBody.middleware"
 import { studentController } from "./modules/student/controller"
 
 dotenv.config()
 
 const server = restify.createServer()
 
+server.use(cors())
 server.use(restify.plugins.bodyParser())
 
-server.post("/student", validations.execute, studentController.newStudent)
+server.post("/student", validationsInBody.execute, studentController.newStudent)
 
 server.listen(process.env.PORT, () => {
   console.log("Server is running")
