@@ -3,9 +3,9 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const driver =  neo4j.driver(
-  "neo4j://localhost",
-  neo4j.auth.basic(String(process.env.USERNAME), String(process.env.PASSWORD))
-)
+const driver = neo4j.driver("neo4j://localhost:7687")
 
-export const sessionDB = driver.session({ database: process.env.DB_NAME })
+export const sessionDB = driver.session({
+  database: process.env.DB_NAME,
+  defaultAccessMode: neo4j.session.WRITE
+})
