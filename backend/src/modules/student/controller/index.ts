@@ -15,6 +15,17 @@ class StudentController {
 
     next()
   }
+
+  async getStudents(req: Request, res: Response, next: Next) {
+    try {
+      const students = await studentService.getAll()
+      res.json(200, students)
+    } catch (error) {
+      res.json(500, { error })
+    }
+
+    next()
+  }
 }
 
 export const studentController = new StudentController()
