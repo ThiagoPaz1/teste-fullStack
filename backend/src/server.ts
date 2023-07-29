@@ -10,6 +10,7 @@ dotenv.config()
 const server = restify.createServer()
 
 server.use(cors())
+server.use(restify.plugins.queryParser())
 server.use(restify.plugins.bodyParser())
 
 server.post("/student", validationsInBody.execute, studentController.newStudent)
