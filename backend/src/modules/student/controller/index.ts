@@ -30,6 +30,20 @@ class StudentController {
 
     next()
   }
+
+  async filterStudents(req: Request, res: Response, next: Next) {
+    const { id, name, course } = req.query
+    
+    try {
+      const students = await studentService.filter(id, name, course)
+      res.json(201, students)
+    } catch (error) {
+      res.json(500, { error })
+    }
+
+    next()
+  }
+
 }
 
 export const studentController = new StudentController()
