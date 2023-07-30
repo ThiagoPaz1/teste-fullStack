@@ -13,23 +13,20 @@ class StudentRepository {
       course: studentData.course
     }
 
-    try {
-      await sessionDB.run(query, datas)
-    } finally {
-      await sessionDB.close()
-    }
+    await sessionDB.run(query, datas)
   }
 
-  async getAll(): Promise<Student[]> {
-    const query = "MATCH (s:Student) return s limit 10"
+  async getAll(page: number, pageSize: number): Promise<{
+    students: Student[],
+    totalStudentsInPage: number
+  }> {
+    const query = `MATCH (s:Student) return s skip ${page} limit ${pageSize}`
+    const studentsData = await sessionDB.run(query)
+    const students: Student[] = studentsData.records.map(i => i.get("s").properties)
 
-    try {
-      const result = await sessionDB.run(query)
-      const students: Student[] = result.records.map(i => i.get("s").properties)
-
-      return students
-    } finally {
-      sessionDB.close()
+    return {
+      totalStudentsInPage: students.length,
+      students
     }
   }
 }

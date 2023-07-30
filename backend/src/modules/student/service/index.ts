@@ -7,8 +7,11 @@ class StudentService {
     await studentRepository.create(studentData)
   }
 
-  async getAll(): Promise<Student[]> {
-    return await studentRepository.getAll()
+  async getAll(page: number, pageSize: number): Promise<{
+    students: Student[],
+    totalStudentsInPage: number
+  }> {
+    return await studentRepository.getAll(page, pageSize)
   }
 }
 
