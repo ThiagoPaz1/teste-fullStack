@@ -15,6 +15,21 @@ class StudentController {
 
     next()
   }
+
+  async getStudents(req: Request, res: Response, next: Next) {
+    const { page, pageSize } = req.query
+    const pageData = isNaN(page) || page <= 0 ? 0 : page
+    const pageSizeData = isNaN(pageSize) || pageSize <= 0 ? 10 : pageSize
+
+    try {
+      const students = await studentService.getAll(pageData, pageSizeData)
+      res.json(200, students)
+    } catch (error) {
+      res.json(500, { error })
+    }
+
+    next()
+  }
 }
 
 export const studentController = new StudentController()
