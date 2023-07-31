@@ -36,7 +36,7 @@ class StudentController {
     
     try {
       const students = await studentService.filter(id, name, course)
-      res.json(201, students)
+      res.json(200, students)
     } catch (error) {
       res.json(500, { error })
     }

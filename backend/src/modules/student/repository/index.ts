@@ -59,16 +59,18 @@ class StudentRepository {
     }
 
     if (id) {
-      getStudentData(queryGetById)
+      return getStudentData(queryGetById)
     }
 
     if (name) {
-      getStudentData(queryGetByName)
+      return getStudentData(queryGetByName)
     }
 
     if (course) {
-      getStudentData(queryGetByCourse)
+      return getStudentData(queryGetByCourse)
     }
+
+    return { students: [] }
   }
 }
 
