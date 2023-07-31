@@ -1,16 +1,16 @@
 import { v4 as uuidv4 } from "uuid"
 
-import { CreateStudentDto } from "../dto/create-student.dto"
+import { CreateStudentDto, UpdateStudentDto } from "../dto"
 import { sessionDB } from "../../../database/connect"
 import { Student } from "../types"
 
 class StudentRepository {
-  async create(studentData: CreateStudentDto): Promise<void> {
+  async create(createStudentDto: CreateStudentDto): Promise<void> {
     const query = "CREATE (s:Student {id : $id, name: $name, course: $course})"
     const datas = {
       id: uuidv4(),
-      name: studentData.name,
-      course: studentData.course
+      name: createStudentDto.name,
+      course: createStudentDto.course
     }
 
     await sessionDB.run(query, datas)
@@ -43,10 +43,10 @@ class StudentRepository {
     const queryGetByName = `MATCH (s:Student {name : '${name}'}) RETURN s`
     const queryGetByCourse = `MATCH (s:Student {course : '${course}'}) RETURN s`
     const queryGetByNameAndCourse = `MATCH (s:Student) WHERE s.name = '${name}' AND s.course = '${course}' RETURN s`
-    
+
     async function getStudentData(query: string): Promise<{ students: Student[] }> {
-      const studentData = await sessionDB.run(query)
-      const students = studentData.records.map(i => i.get("s").properties)
+      const studentsData = await sessionDB.run(query)
+      const students = studentsData.records.map(i => i.get("s").properties)
 
       return { students }
     }
@@ -71,6 +71,15 @@ class StudentRepository {
     }
 
     return { students: [] }
+  }
+
+  async update(updateStudentDto: UpdateStudentDto): Promise<{ student: Student }> {
+    const { id, name, course } = updateStudentDto
+    const query = `MATCH (s:Student {id : '${id}'}) SET s.name= '${name}', s.course= '${course}' RETURN s`
+    const result = await sessionDB.run(query)
+    const studentData = result.records[0].get("s").properties
+
+    return { student: studentData }
   }
 }
 

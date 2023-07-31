@@ -33,10 +33,24 @@ class StudentController {
 
   async filterStudents(req: Request, res: Response, next: Next) {
     const { id, name, course } = req.query
-    
+
     try {
       const students = await studentService.filter(id, name, course)
       res.json(200, students)
+    } catch (error) {
+      res.json(500, { error })
+    }
+
+    next()
+  }
+
+  async updateStudent(req: Request, res: Response, next: Next) {
+    const { id } = req.params
+    const { name, course } = req.body
+
+    try {
+      const student = await studentService.update({ id, name, course })
+      res.json(200, student)
     } catch (error) {
       res.json(500, { error })
     }
