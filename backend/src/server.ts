@@ -20,6 +20,8 @@ server.post("/student", validationsInBody.execute, studentController.newStudent)
 
 server.put("/student/:id", verifyId.execute, studentController.updateStudent)
 
+server.del("/student/:id", verifyId.execute, studentController.deleteStudent)
+
 server.listen(process.env.PORT, () => {
   console.log("Server is running")
 })

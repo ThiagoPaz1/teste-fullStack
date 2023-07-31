@@ -25,6 +25,10 @@ class StudentService {
   async update(updateStudentDto: UpdateStudentDto): Promise<{ student: Student }> {
     return await studentRepository.update(updateStudentDto)
   }
+
+  async delete(id: string): Promise<void> {
+    await studentRepository.delete(id)
+  }
 }
 
 export const studentService = new StudentService()

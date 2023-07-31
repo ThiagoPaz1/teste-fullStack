@@ -58,6 +58,20 @@ class StudentController {
     next()
   }
 
+
+  async deleteStudent(req: Request, res: Response, next: Next) {
+    const { id } = req.params
+
+    try {
+      await studentService.delete(id)
+      res.json(200, { message: "Student removed" })
+    } catch (error) {
+      res.json(500, { error })
+    }
+
+    next()
+  }
+
 }
 
 export const studentController = new StudentController()

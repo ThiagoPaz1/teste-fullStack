@@ -81,6 +81,11 @@ class StudentRepository {
 
     return { student: studentData }
   }
+
+  async delete(id: string): Promise<void> {
+    const query = `MATCH (s:Student {_id : '${id}'}) DELETE s`
+    await sessionDB.run(query)
+  }
 }
 
 export const studentRepository = new StudentRepository()
