@@ -1,5 +1,5 @@
 import { studentRepository } from "../repository"
-import { CreateStudentDto } from "../dto/create-student.dto"
+import { CreateStudentDto, UpdateStudentDto } from "../dto"
 import { Student } from "../types"
 
 class StudentService {
@@ -20,6 +20,14 @@ class StudentService {
     name: string,
     course: string): Promise<{ students: Student[] }> {
     return await studentRepository.filter(id, name, course)
+  }
+
+  async update(updateStudentDto: UpdateStudentDto): Promise<{ student: Student }> {
+    return await studentRepository.update(updateStudentDto)
+  }
+
+  async delete(id: string): Promise<void> {
+    await studentRepository.delete(id)
   }
 }
 
